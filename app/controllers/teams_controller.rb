@@ -13,8 +13,8 @@ class TeamsController < ApplicationController
 	end
 
 	def join
-		@team = Team.find(params[:team][:id])
-		if @team && @team.authenticate(params[:team][:password])
+		@team = Team.find(params[:id])
+		if @team && @team.authenticate(params[:password])
 			redirect_to new_team_user_path(@team)
 		else
 			flash[:alert] = "Sorry, incorrect password."

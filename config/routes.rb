@@ -3,7 +3,7 @@ Rails.application.routes.draw do
 
   resources :teams, only: [:new, :create] do
   	collection do
-  		get 'join'
+  		post 'join'
   	end
   	resources :users, only: [:new, :create, :edit, :update]
     resources :channels, only: [:new, :create]

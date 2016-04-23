@@ -5,9 +5,14 @@
 	<%= f.submit 'Create team' %>
 <% end %>
 
-<%= standard_form @team, url: join_teams_path, method: 'GET', html:{ id: 'join_team', class: 'join_team'} do |f| %>
-	<%= f.fieldset(f.collection_select(:id, Team.all, :id, :name), f.password_field(:password), legend_text: 'Join an existing team.') %>
-	<%= f.submit 'Join team' %>
+<%= form_tag join_teams_path, id: 'join_team', class: 'join_team' do %>
+	<fieldset class='fieldset'>
+		<legend>Join an existing team</legend>
+		<%= select_tag(:id, options_from_collection_for_select(Team.all, :id, :name)) %>
+		<%= label_tag :password, 'Password' %>
+		<%= password_field_tag :password %>	
+	</fieldset>
+	<%= submit_tag 'Join team', class: 'expanded button' %>
 <% end %>
 
 <%= link_to login_path do %>
