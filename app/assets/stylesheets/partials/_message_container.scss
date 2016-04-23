@@ -1,0 +1,35 @@
+.message-container {
+	width: 90%;
+	margin: 60px 30px;
+	.message-content {
+		overflow-y: auto;
+		bottom: 0;
+		width: 100%;
+		&::after {
+			vertical-align: bottom;
+		}
+		.message {
+			overflow-x: hidden;
+			padding: 20px 10px;
+			margin-top: 5px;
+			border-radius: 10px;
+			border: 1px solid $light-gray;
+			word-wrap: break-word;
+			background: lighten($light-gray, 3%);
+			.delete-message-button {
+				display: none;
+			}
+			&:hover {
+				background: lighten($light-gray, 8%);
+				.delete-message-button {
+					display: inline;
+					color: $alert-color;
+					font-size: 1.5em;
+				}
+			}
+		}
+	}
+}
+
+
+

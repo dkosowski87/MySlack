@@ -1,0 +1,6 @@
+<%= title("Sign up for #{@team.name}") %>
+
+<%= standard_form [@team, @user] do |f| %>
+	<%= render partial: 'form', locals: {f: f} %>
+	<%= f.submit 'Sign up' %>
+<% end %>

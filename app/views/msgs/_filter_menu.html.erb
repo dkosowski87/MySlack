@@ -1,0 +1,16 @@
+<li class="active"><%= link_to 'All', "all" %></li>
+<li><%= link_to 'Today', "today" %></li>
+<li><%= link_to 'Yesterday', "yesterday" %></li>
+<li><%= link_to 'This Week', "this_week" %></li>
+<li><%= link_to 'Last Week', "last_week" %></li>
+<li>
+	<%= link_to 'During Month', '#' %>
+	<ul class="menu">
+		<%= filter_months %>
+	</ul>
+</li>
+<li><%= link_to 'During Year', "during_year" %>
+	<ul class="menu">
+		<%= filter_years %>
+	</ul>
+</li>

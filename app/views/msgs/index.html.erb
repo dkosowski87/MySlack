@@ -1,0 +1,17 @@
+<div class="message-container">
+	<% unless @msgs.nil? %>
+	<div class="no-bullet message-content">
+		<% @msgs.each do |msg| %>
+			<div class="message">
+			<% if msg.sender == @user %>
+				<%= link_to "/msgs/#{msg.id}", method: :delete do %>
+					<span class="delete-message-button">&#10006;</span>
+				<% end %>
+			<% end %>
+				<%= msg.created_at.to_formatted_s(:short) %>| <strong><%=msg.sender.name%>:</strong> <%= msg.content %>
+			</div>
+		<% end %>
+	</div>
+	<% end %>
+</div>
+

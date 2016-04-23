@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <%= yield :head %>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
+  <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+  <%= csrf_meta_tags %>
+</head>
+<body data-no-turbolink="true"><!-- disabled turbolinks -->
+
+	<% flash.each do |type, msg| %>
+		<%= content_tag :div, msg, class: type%>
+	<% end %>
+
+	<%= page_wrapper do %>
+		<%= yield %>
+		<%= render 'layouts/go_back_link' %>
+	<% end %>
+
+</body>
+</html>

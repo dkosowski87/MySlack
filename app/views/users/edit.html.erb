@@ -1,0 +1,6 @@
+<%= title("Edit your account") %>
+
+<%= standard_form [@team, @user] do |f| %>
+	<%= render partial: 'form', locals: {f: f} %>
+	<%= f.submit 'Update' %>
+<% end %>

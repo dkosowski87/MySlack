@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>MySlack | <%= @team.name %> </title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
+  <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+  <%= csrf_meta_tags %>
+</head>
+<body data-no-turbolink="true"><!-- disabled turbolinks -->
+
+	<div class="expanded row">
+		<div class="small-2 columns team-menu">
+			<%= render 'msgs/team_menu' %>
+		</div>
+		<div class="small-10 columns">
+			<div class="row collapse top-menu">
+				<div class="small-8 columns">
+					<ul class="dropdown menu align-center" data-dropdown-menu>
+						<%= render 'msgs/filter_menu' %>
+					</ul>
+				</div>
+				<div class="small-3 columns">
+						<%= render 'msgs/search_form' %>
+				</div>
+				<div class="small-1 columns">
+					<div class="text-right">
+						<%= link_to logout_path, method: :delete do %>
+							<i class="fi-power icon-large"></i>
+						<% end %>
+					</div>
+
+				</div>
+			</div>
+			<div class="row">
+				<%= yield %>
+				<div class="small-12 columns">
+					<%= render 'msgs/message_console' %>
+				</div>
+			</div>
+		</div>
+	</div>
+
+</body>
+</html>

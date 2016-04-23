@@ -1,0 +1,6 @@
+<%= title('Invite a team member') %>
+
+<%= standard_form @invitation do |f| %>
+	<%= f.fieldset(f.text_area(:content, size: '60x3'), f.collection_select(:recipient_id, @team_members, :id, :name), legend_text: 'Create an invitation for a team member') %>
+	<%= f.submit 'Send Invitation' %>
+<% end %>

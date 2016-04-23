@@ -1,0 +1,14 @@
+<ul class="recipient-groups menu vertical">
+	<li class="team-name menu-text"><%= @team.name %></li>
+	<li class="menu-text">List of Channels:</li>
+	<li><%= link_to 'Create a Channel +', new_team_channel_path(@team) %></li>
+	<%= recipient_groups(@user.channels, @user) %>
+	<li class="menu-text">List of Team Members:</li>
+	<li><%= link_to 'Send Invitation +', new_invitation_path %></li>
+	<%= recipient_groups(@user.team_members, @user) %>
+</ul>
+<div class="row settings-menu">
+	<%= link_to edit_team_user_path(@team, @user) do %>
+		<i class="fi-torso icon-large"></i>
+	<% end %>
+</div>

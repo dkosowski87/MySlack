@@ -1,0 +1,60 @@
+.team-name {
+	font-size: 1.5em;
+}
+
+.recipient-groups {
+	width: 100%;
+}
+
+.message-console {
+	width: 80%;
+	position: fixed;
+	bottom: 0px;
+	background: #fff;
+	padding: 8px 0 0 0;
+	#msg_content {
+		border-radius: 10px;
+		border: 3px solid $dark-gray;
+		background: lighten($light-gray, 5%);
+		&:focus {
+			background: lighten($light-gray, 10%);
+		}
+	}
+	.message-button {
+		border-radius: 10px;
+		height: 100%;
+		padding: 0px;
+		width: 100px;
+		margin-left: 10px;
+	}
+}
+
+.top-menu {
+	width: 80%;
+	position: fixed;
+	background: #fff;
+	border-bottom: 1px solid $primary-color;
+}
+
+.team-menu {
+	position: fixed;	
+	min-height: 100vh;
+	border-right: 1px solid $primary-color;
+	.channel {
+		margin: 2px 0;
+		&:hover {
+			background: lighten($light-gray, 5%);
+		}
+	}
+	.user {
+		margin: 2px 0;
+		&:hover {
+			background: lighten($light-gray, 5%);
+		}
+	}
+}
+
+.settings-menu {
+	position: fixed;
+	bottom: 30px;
+}

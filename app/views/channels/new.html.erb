@@ -1,0 +1,6 @@
+<%= title('Create your channel') %>
+
+<%= standard_form [@team, @channel] do |f| %>
+	<%= f.fieldset(f.text_field(:name), legend_text: 'Enter the name of the channel') %>
+	<%= f.submit 'Create Channel'%>
+<% end %>

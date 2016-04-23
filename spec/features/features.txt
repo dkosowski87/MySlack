@@ -1,0 +1,4 @@
+# writing tests
+# invitations
+# javascript for interaction
+# responsiveness

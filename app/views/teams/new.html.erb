@@ -1,0 +1,15 @@
+<%= title ('Create your team') %>
+
+<%= standard_form @team do |f| %>
+	<%= f.fieldset(f.text_field(:name), f.password_field(:password), f.password_field(:password_confirmation), legend_text: 'Create a new team') %>
+	<%= f.submit 'Create team' %>
+<% end %>
+
+<%= standard_form @team, url: join_teams_path, method: 'GET', html:{ id: 'join_team', class: 'join_team'} do |f| %>
+	<%= f.fieldset(f.collection_select(:id, Team.all, :id, :name), f.password_field(:password), legend_text: 'Join an existing team.') %>
+	<%= f.submit 'Join team' %>
+<% end %>
+
+<%= link_to login_path do %>
+	<p class="text-center">Already working with MySlack? Sign In.</p>
+<% end %>

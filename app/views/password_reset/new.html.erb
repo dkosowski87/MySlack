@@ -1,0 +1,10 @@
+<%= title('Reset your password') %>
+
+<%= form_tag do %>
+<fieldset class='fieldset'>
+	<legend>Enter your email address</legend>
+	<%= label_tag :email %>
+	<%= text_field_tag :email %>
+</fieldset>
+	<%= submit_tag 'Submit', class: 'expanded button' %>
+<% end %>

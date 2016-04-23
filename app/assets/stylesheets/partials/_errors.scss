@@ -1,0 +1,15 @@
+.field_with_errors {
+	display: inline;
+	input {
+		background-color: lighten(red, 40%);
+		&:focus {
+			background-color: #fff;
+		}
+	}
+}
+
+.alert {
+	text-align: center;
+	font-weight: bold;
+	color: darken(red, 25%);
+}

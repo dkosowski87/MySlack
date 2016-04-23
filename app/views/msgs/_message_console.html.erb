@@ -1,0 +1,13 @@
+<div class="message-console">
+<%= form_for @msg do |f| %>
+<div class="input-group">
+	<%= f.text_field :content, class: "input-group-field" %>
+	<%= f.hidden_field :recipient_type, value: 'Channel' %>
+	<%= f.hidden_field :recipient_id, value: 1 %>
+	</fieldset>
+	<div class="input-group-button">
+		<%= f.submit 'Send', class: "message-button button" %>
+	</div>
+</div>
+<% end %>
+<div>
