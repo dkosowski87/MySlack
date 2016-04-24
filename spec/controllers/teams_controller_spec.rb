@@ -55,4 +55,44 @@ RSpec.describe TeamsController do
 		end
 		
 	end
+
+	describe 'POST #join' do
+
+		let!(:team) { create(:team) }
+
+		it 'finds the the team by id' do
+			expect(Team).to receive(:find).with(team.id.to_s)
+			post :join, {id: team.id}
+		end
+
+		it 'assigns the proper team to the an instance variable' do	
+			post :join, {id: team.id}
+			expect(assigns(:team)).to eq(team)		
+		end
+			
+		it 'authenticates the team by password' do
+			allow(Team).to receive(:find).with(team.id.to_s).and_return(team)
+			expect(team).to receive(:authenticate)
+			post :join, {id: team.id}
+		end
+
+		context 'with valid params' do
+			it 'redirects to new user page' do
+				post :join, {id: team.id, password: team.password}
+				expect(response).to redirect_to(new_team_user_path(team))
+			end
+		end
+
+		context 'with invalid params' do
+			it 'redirects to the new team action' do
+				post :join, {id: team.id, password: 'wrong'}
+				expect(response).to redirect_to(new_team_path)
+			end
+
+			it 'creates a flash failure message' do
+				post :join, {id: team.id, password: 'wrong'}
+				expect(flash[:alert]).to eq("Sorry, incorrect password.")
+			end
+		end
+	end
 end

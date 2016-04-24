@@ -13,5 +13,9 @@ RSpec.describe 'routing to teams' do
 	it 'routes POST "/teams" to teams#create' do
 		expect(post: '/teams').to route_to(controller: 'teams', action: 'create')
 	end
+
+	it 'routes POST "/teams/join" to teams#join' do
+		expect(post: '/teams/join').to route_to(controller: 'teams', action: 'join')
+	end
 	
 end
