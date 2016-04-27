@@ -52,6 +52,10 @@
 			background: lighten($light-gray, 5%);
 		}
 	}
+	.active-recipient {
+		color: #fefefe;
+    background: #2199e8;
+	}
 }
 
 .settings-menu {
