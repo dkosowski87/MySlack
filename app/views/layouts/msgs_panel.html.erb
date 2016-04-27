@@ -35,7 +35,7 @@
 			<div class="row">
 				<%= yield %>
 				<div class="small-12 columns">
-					<%= render 'msgs/message_console' %>
+					<%= render partial: 'msgs/message_console', locals: {recipient: @channel || @team_member} %>
 				</div>
 			</div>
 		</div>
