@@ -1,6 +1,6 @@
 <%= title('Sign in to your account') %>
 
-<%= form_tag login_path do %>
+<%= form_tag login_path, id: 'login' do %>
 <fieldset class="fieldset">
 	<legend>Entere your email and password</legend>
 	<%= label_tag :email, 'Email'%>
