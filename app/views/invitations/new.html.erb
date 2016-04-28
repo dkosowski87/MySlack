@@ -1,6 +1,12 @@
-<%= title('Invite a team member') %>
+<%= title('Create your invitation') %>
 
 <%= standard_form @invitation do |f| %>
-	<%= f.fieldset(f.text_area(:content, size: '60x3'), f.collection_select(:recipient_id, @team_members, :id, :name), legend_text: 'Create an invitation for a team member') %>
+	<%= f.fieldset(f.text_area(:content, size: '80x8'),
+		  f.label(:recipient_id, 'Team Member'),
+			f.collection_select(:recipient_id, @team_members, :id, :name),
+			label_tag(:channel_id, 'Channel'),
+			select_tag(:channel_id, options_from_collection_for_select(@adm_channels, :id, :name)),
+			legend_text: 'Invite a team member to join your channel')
+			%>
 	<%= f.submit 'Send Invitation' %>
 <% end %>

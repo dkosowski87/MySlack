@@ -3,7 +3,7 @@ class StandardFormBuilder < ActionView::Helpers::FormBuilder
 	include ActionView::Helpers::CaptureHelper
 	include ActionView::Context
 
-	%w(text_field password_field email_field).each do |field|
+	%w(text_field password_field email_field text_area).each do |field|
 		define_method field.to_sym do |method, options={}|
 			options['aria-describedby'] = "#{method}HelpText"
 			label(method) + super(method, options) + errors_display(method)
