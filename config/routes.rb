@@ -6,7 +6,12 @@ Rails.application.routes.draw do
   		post 'join'
   	end
   	resources :users, only: [:new, :create, :edit, :update]
-    resources :channels, only: [:new, :create]
+    resources :channels, only: [:new, :create] do
+      member do
+        get 'join'
+        get 'reject'
+      end
+    end
   end
 
   get 'msgs/:type/:id/:filter', to: 'msgs#index'

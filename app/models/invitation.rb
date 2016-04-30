@@ -1,10 +1,11 @@
 class Invitation < Msg
-
-	# def create_join_channel_template(channel)
-	# 	html = "#{channel.admin.name} is inviting you to join the #{channel.name} channel. Would you liket to join?"
-	# 	html += content_tag :a, "Yes, sure.", "/teams/#{channel.team.id}/channels/#{channel.id}/join"
-	# 	html += content_tag :a, "No, thanks.", "/teams/#{channel.team.id}/channels/#{channel.id}/join"
-	# 	return html
-	# end
-
+	#State
+	state_machine :state, :initial => :pending do
+		event :accept! do
+			transition :pending => :accepted
+		end
+		event :reject! do
+			transition :pending => :rejected
+		end
+	end
 end

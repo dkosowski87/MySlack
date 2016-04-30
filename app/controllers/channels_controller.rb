@@ -17,6 +17,31 @@ class ChannelsController < ApplicationController
 		end
 	end
 
+	def join
+		check_invitation
+		if @channel && @invitation
+			@channel.users << current_user
+			@invitation.accept!
+			redirect_to "/msgs/channel/#{@channel.id}/all"
+		else
+			render 'new'
+			@channel = Channel.new
+			flash.now[:alert] = 'There is a problem with your invitation'
+		end
+	end
+
+	def reject
+		check_invitation
+		if @channel && @invitation
+			@invitation.reject!
+			redirect_to "/msgs/channel/#{@team.channels.first.id}/all"
+		else
+			render 'new'
+			@channel = Channel.new
+			flash.now[:alert] = 'There is a problem with your invitation'
+		end
+	end
+
 	private
 	def channel_params
 		params.require(:channel).permit(:name)
@@ -24,5 +49,10 @@ class ChannelsController < ApplicationController
 
 	def set_back_link
 		go_back_link("/msgs/channel/#{@team.channels.first.id}/all")
+	end
+
+	def check_invitation
+		@channel = current_user.team.channels.find_by(id: params[:id])
+		@invitation = current_user.received_invitations.where(sender: @channel.admin, state: 'pending').with_text("##{@channel.id}").last
 	end
 end

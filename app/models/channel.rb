@@ -36,20 +36,4 @@ class Channel < ActiveRecord::Base
 		user.sent_msgs.create(content: "#{user.name} left #{name} channel.", recipient_id: id, recipient_type: "Channel")
 	end
 
-#State
-	state_machine :state, :initial => :quiet do
-		event :activate do
-			transition :quiet => :active
-		end
-		event :increase_volume do
-			transition :active => :loud
-		end
-		event :decrease_volume do
-			transition :loud => :active
-		end 
-		event :mute do
-			transition :active => :quiet
-		end
-	end
-
 end

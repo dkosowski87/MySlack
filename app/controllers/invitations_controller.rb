@@ -10,10 +10,12 @@ class InvitationsController < ApplicationController
 	end
 
 	def create
-		# channel = current_user.adm_channels.find_by(id: params[:channel_id])
-		# params[:invitation][:content] += " ##{channel.id}"
 		@invitation = current_user.sent_invitations.new(invitation_params)
-		if @invitation.save
+		if @invitation.valid?
+			channel = current_user.adm_channels.find_by(id: params[:channel_id])
+			params[:invitation][:content] += " ##{channel.id} #{channel.name}"
+			@invitation = current_user.sent_invitations.new(invitation_params)
+			@invitation.save
 			redirect_to "/msgs/user/#{params[:invitation][:recipient_id]}/all"
 		else
 			@adm_channels = current_user.adm_channels

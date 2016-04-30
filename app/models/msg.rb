@@ -39,19 +39,6 @@ class Msg < ActiveRecord::Base
 
 	scope :with_text, ->(text) { where("content LIKE ?", "%#{text}%") }
 
-#State
-	state_machine :state, :initial => :unread do
-		event :read do
-			transition :unread => :read
-		end
-		event :accept do
-			transition :read => :accepted, if: ->(msg) {msg.type == "Invitation"}
-		end
-		event :reject do
-			transition :read => :not_accepted, if: ->(msg) {msg.type == "Invitation"}
-		end
-	end
-
 #Private methods
 	private
 	def self.parse_month(month)

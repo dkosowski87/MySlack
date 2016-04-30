@@ -11,7 +11,7 @@ class User < ActiveRecord::Base
 	has_many :received_msgs, -> { readonly }, class_name: "Msg", as: :recipient
 	
 	has_many :sent_invitations, -> { where(recipient_type: "User") }, class_name: "Invitation", foreign_key: "sender_id"
-	has_many :received_invitations, -> { readonly }, class_name: "Invitation", as: :recipient
+	has_many :received_invitations, class_name: "Invitation", as: :recipient
 	
 #Validations
 	validates :name, presence: {message: "Please state your name."},
@@ -43,22 +43,6 @@ class User < ActiveRecord::Base
 	public
 	def team_members
 		team.users.where("id != ?", self.id)
-	end
-
-#State
-	state_machine :state, :initial => :inactive do
-		event :login do
-			transition :inactive => :active
-		end
-		event :hibernate do
-			transition :active => :asleep
-		end
-		event :wake_up do
-			transition :asleep => :active
-		end
-		event :logout do
-			transition [:active, :asleep] => :inactive
-		end
 	end
 
 #Other instance methods

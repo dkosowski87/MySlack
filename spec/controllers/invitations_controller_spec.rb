@@ -58,19 +58,19 @@ RSpec.describe InvitationsController do
 			merge!(options)
 		end
 		
-		# it 'finds the channel for which the invitation is sent' do
-		# 	expect(user.adm_channels).to receive(:find_by).and_return(channel)
-		# 	post :create, valid_params
-		# end
+		it 'finds the channel for which the invitation is sent' do
+			expect(user.adm_channels).to receive(:find_by).and_return(channel)
+			post :create, valid_params
+		end
 
 		it 'creates the invitation' do
 			expect { post :create, valid_params }.to change(Invitation, :count).by(1)
 		end
 
-		# it 'appends the channel id to the message body' do
-		# 	post :create, valid_params
-		# 	expect(Invitation.last.content).to match(/#\d+/)
-		# end	
+		it 'appends the channel id to the message body' do
+			post :create, valid_params
+			expect(Invitation.last.content).to match(/#\d+/)
+		end	
 
 		it 'redirect to recipient msgs page' do
 			post :create, valid_params
