@@ -3,9 +3,9 @@ class Channel < ActiveRecord::Base
 	belongs_to :team
 
 	belongs_to :admin, class_name: "User", foreign_key: "admin_id"
-	has_and_belongs_to_many :users, after_add: :send_join_info, after_remove: :send_leave_info
+	has_and_belongs_to_many :users, after_add: :send_join_info, before_remove: :send_leave_info
 
-	has_many :received_msgs, -> { readonly }, class_name: "Msg", as: :recipient
+	has_many :received_msgs, class_name: "Msg", as: :recipient, dependent: :destroy
 
 #Validations
 	validates :name, presence: {message: "Enter the channel name."},
@@ -33,7 +33,7 @@ class Channel < ActiveRecord::Base
 	end
 
 	def send_leave_info(user)
-		user.sent_msgs.create(content: "#{user.name} left #{name} channel.", recipient_id: id, recipient_type: "Channel")
+		user.sent_msgs.create(content: "#{user.name} unsubscribed #{name} channel.", recipient_id: id, recipient_type: "Channel")
 	end
 
 end

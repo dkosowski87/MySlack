@@ -1,0 +1,32 @@
+<%= title("Manage your channels") %>
+
+<% unless @adm_channels.empty? %>
+	<h5>The channels you have created:</h5>
+	<hr>
+	<ul class="no-bullet">
+	<% @adm_channels.each do |channel| %>
+		<li>
+		<p><%= channel.name %>
+		<%= link_to team_channel_path(@team, channel), method: :delete do %>
+			<span>Delete</span></p>
+		<% end %>
+		</li>
+	<% end %>
+	</ul>
+<% end %>
+<% unless @channels.empty? %>
+	<h5>The channels you are subscribed to:</h5>
+	<hr>
+	<ul class="no-bullet">
+	<% @channels.each do |channel| %>
+		<li>
+		<p><%= channel.name %>
+			<% unless @adm_channels.include?(channel) || channel.name == 'General' %>
+				<%= link_to unsubscribe_team_channel_path(@team, channel) do %>
+					<span>Unsubscribe</span></p>
+				<% end %>
+			<% end %>
+		</li>
+	<% end %>
+	</ul>
+<% end %>

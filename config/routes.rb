@@ -6,10 +6,11 @@ Rails.application.routes.draw do
   		post 'join'
   	end
   	resources :users, only: [:new, :create, :edit, :update]
-    resources :channels, only: [:new, :create] do
+    resources :channels, only: [:new, :create, :index, :destroy] do
       member do
         get 'join'
         get 'reject'
+        get 'unsubscribe'
       end
     end
   end

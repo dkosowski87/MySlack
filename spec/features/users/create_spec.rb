@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe 'creating a user' do |variable|
+RSpec.describe 'creating a user' do
 
 	let!(:team) { create(:team) }
 
