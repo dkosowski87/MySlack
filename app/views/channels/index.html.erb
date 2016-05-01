@@ -1,7 +1,7 @@
 <%= title("Manage your channels") %>
 
 <% unless @adm_channels.empty? %>
-	<h5>The channels you have created:</h5>
+	<h5 class="text-center">The channels you have created:</h5>
 	<hr>
 	<ul class="no-bullet">
 	<% @adm_channels.each do |channel| %>
@@ -15,7 +15,7 @@
 	</ul>
 <% end %>
 <% unless @channels.empty? %>
-	<h5>The channels you are subscribed to:</h5>
+	<h5 class="text-center">The channels you are subscribed to:</h5>
 	<hr>
 	<ul class="no-bullet">
 	<% @channels.each do |channel| %>
