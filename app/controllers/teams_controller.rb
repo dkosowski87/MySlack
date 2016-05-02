@@ -1,4 +1,6 @@
 class TeamsController < ApplicationController
+	before_filter :require_user, only: [:destroy]
+
 	def new
 		@team = Team.new		
 	end
@@ -19,6 +21,17 @@ class TeamsController < ApplicationController
 		else
 			flash[:alert] = "Sorry, incorrect password."
 			redirect_to new_team_path
+		end
+	end
+
+	def destroy
+		@team = current_user.team
+		if @team.team_founder == current_user
+			@team.destroy
+			redirect_to new_team_path
+		else
+			flash[:alert] = "Could not delete team"
+			redirect_to "/msgs/channel/#{@team.channels.first.id}/all"
 		end
 	end
 

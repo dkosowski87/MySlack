@@ -4,3 +4,7 @@
 	<%= render partial: 'users/form', locals: {f: f} %>
 	<%= f.submit 'Update' %>
 <% end %>
+
+<%= link_to team_path(@team), method: :delete do %>
+	<p class="text-center">I would like to delete this team account.</p>
+<% end %>

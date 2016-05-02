@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
   root 'teams#new'
 
-  resources :teams, only: [:new, :create] do
+  resources :teams, only: [:new, :create, :destroy] do
   	collection do
   		post 'join'
   	end
