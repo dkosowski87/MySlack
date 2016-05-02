@@ -9,19 +9,24 @@
 </ul>
 <div class="row settings-menu">
 	<% if @user.is_a? TeamFounder %>
-		<div class="small-6 columns">
+		<div class="small-4 columns">
 			<%= link_to edit_team_team_founder_path(@team, @user) do %>
 				<i class="fi-torso icon-large"></i>
 			<% end %>
 		</div>
+		<div class="small-4 columns">
+		<%= link_to team_users_path(@team) do %>
+			<i class="fi-torsos-all icon-large"></i>
+		<% end %>
+		</div>
 	<% else %> 
-		<div class="small-6 columns">
+		<div class="small-4 columns">
 			<%= link_to edit_team_user_path(@team, @user) do %>
 				<i class="fi-torso icon-large"></i>
 			<% end %>
 		</div>
 	<% end %>
-	<div class="small-6 columns end">
+	<div class="small-4 end columns">
 		<%= link_to team_channels_path(@team) do %>
 			<i class="fi-volume icon-large"></i>
 		<% end %>

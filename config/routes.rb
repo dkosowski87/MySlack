@@ -5,7 +5,12 @@ Rails.application.routes.draw do
   	collection do
   		post 'join'
   	end
-  	resources :users, only: [:new, :create, :edit, :update]
+  	resources :users, only: [:new, :create, :edit, :update, :index] do
+      member do
+        get 'deactivate'
+        get 'activate'
+      end
+    end
     resources :channels, only: [:new, :create, :index, :destroy] do
       member do
         get 'join'

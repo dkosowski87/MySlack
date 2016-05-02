@@ -1,0 +1,20 @@
+<%= title("Manage your team") %>
+
+<h5 class="text-center">Your team members:</h5>
+<hr>
+<ul class="no-bullet">
+<% @team_members.each do |member| %>
+	<li>
+	<p><%= member.name %>
+	<% if member.state == 'active' %>
+		<%= link_to deactivate_team_user_path(@team, member) do %>
+			<span>Deactivate</span></p>
+		<% end %>
+	<% else %>
+		<%= link_to activate_team_user_path(@team, member) do %>
+			<span>Activate</span></p>
+		<% end %>
+	<% end %>
+	</li>
+<% end %>
+</ul>

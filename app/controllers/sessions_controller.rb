@@ -7,11 +7,19 @@ class SessionsController < ApplicationController
 	def create
 		user = User.find_by(email: params[:email])
 		if user && user.authenticate(params[:password])
-			if params[:remember_me]
-				cookies.permanent.encrypted[:remember_me_token] = user.id
+			if user.state == 'active'
+				if params[:remember_me]
+					cookies.permanent.encrypted[:remember_me_token] = user.id
+				end
+				session[:user_id] = user.id
+				redirect_to "/msgs/channel/#{user.team.channels.first.id}/all"
+			else
+				Notifier.send_activate_request(user).deliver_now
+				flash.now[:alert] = "Your account is deactivated. 
+				An information has been sent to your teams founder to activate the account.
+				If your account will be activated, you will receive a proper email message."
+				render 'new'
 			end
-			session[:user_id] = user.id
-			redirect_to "/msgs/channel/#{user.team.channels.first.id}/all"
 		else
 			flash.now[:alert] = "Incorrect Email or Password"
 			render 'new'

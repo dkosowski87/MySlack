@@ -4,3 +4,7 @@
 	<%= render partial: 'form', locals: {f: f} %>
 	<%= f.submit 'Update' %>
 <% end %>
+
+<%= link_to deactivate_team_user_path(@team, @user) do %>
+	<p class="text-center">I would like to deactivate my account.</p>
+<% end %>

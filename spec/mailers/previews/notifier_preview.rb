@@ -7,4 +7,8 @@ class NotifierPreview < ActionMailer::Preview
 	def password_reset
 		Notifier.password_reset(User.first)
 	end
+
+	def send_activate_request
+		Notifier.send_activate_request(User.last)
+	end
 end

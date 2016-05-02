@@ -45,6 +45,17 @@ class User < ActiveRecord::Base
 		team.users.where("id != ?", self.id)
 	end
 
+#State
+
+	state_machine :state, :initial => :active do
+		event :deactivate! do
+			transition :active => :deactivated
+		end
+		event :activate! do
+			transition :deactivated => :active
+		end
+	end
+
 #Other instance methods
 
 	def generate_password_reset_token!
