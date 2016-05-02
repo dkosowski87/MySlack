@@ -7,7 +7,7 @@ class User < ActiveRecord::Base
 	has_many :adm_channels, class_name: "Channel", foreign_key: "admin_id"
 	has_and_belongs_to_many :channels
 
-	has_many :sent_msgs, class_name: "Msg", foreign_key: "sender_id"
+	has_many :sent_msgs, class_name: "Msg", foreign_key: "sender_id", dependent: :destroy
 	has_many :received_msgs, -> { readonly }, class_name: "Msg", as: :recipient
 	
 	has_many :sent_invitations, -> { where(recipient_type: "User") }, class_name: "Invitation", foreign_key: "sender_id"
