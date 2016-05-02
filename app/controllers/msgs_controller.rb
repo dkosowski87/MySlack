@@ -9,7 +9,7 @@ class MsgsController < ApplicationController
 		when 'channel'
 			if find_channel
 				msgs_in_channel = Msg.in_channels(@channel)
-				@msgs = filter_messages(msgs_in_channel, params[:q], params[:filter], params[:date])
+				@msgs = filter_messages(msgs_in_channel, params[:q], params[:filter], params[:date]).order(:created_at)
 				render layout: 'msgs_panel'
 			else
 				render file: 'public/404', status: :not_found
@@ -17,7 +17,7 @@ class MsgsController < ApplicationController
 		when 'user'
 			if find_team_member
 				msgs_between_team_members = Msg.between_team_members(current_user, @team_member)
-				@msgs = filter_messages(msgs_between_team_members, params[:q], params[:filter], params[:date])
+				@msgs = filter_messages(msgs_between_team_members, params[:q], params[:filter], params[:date]).order(:created_at)
 				render layout: 'msgs_panel'
 			else
 				render file: 'public/404', status: :not_found

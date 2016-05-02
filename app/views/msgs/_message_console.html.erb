@@ -2,7 +2,7 @@
 <%= form_for @msg do |f| %>
 <div class="input-group">
 	<%= f.text_field :content, class: "input-group-field" %>
-	<%= f.hidden_field :recipient_type, value: recipient.class.to_s %>
+	<%= f.hidden_field :recipient_type, value: (recipient.class.to_s == 'Channel' ? 'Channel' : 'User') %>
 	<%= f.hidden_field :recipient_id, value: recipient.id %>
 	</fieldset>
 	<div class="input-group-button">

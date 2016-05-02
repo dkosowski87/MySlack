@@ -15,8 +15,9 @@ module UsersHelper
 	end
 
 	def generate_recipient_tag(member)
-		link_to "/msgs/#{member.class.to_s.downcase}/#{member.id}/all" do
-			content_tag :li, class: "#{member.class.to_s.downcase}" do
+		type = member.class.to_s == 'Channel' ? 'channel' : 'user'
+		link_to "/msgs/#{type}/#{member.id}/all" do
+			content_tag :li, class: "#{type}" do
 				content_tag(:i, " ", class: "fi-#{group_icon(member)}") + content_tag(:span, member.name)
 			end
 		end
@@ -24,7 +25,7 @@ module UsersHelper
 
 	def group_icon(member)
 		case member.class.to_s
-		when 'User'
+		when 'User', 'TeamFounder'
 			'torso'
 		when 'Channel'
 			'volume'

@@ -38,7 +38,7 @@ RSpec.describe TeamsController do
 			it 'redirects to new user path' do
 				post :create, team: post_params
 				team = Team.last
-		  	expect(response).to redirect_to(new_team_user_path(team))
+		  	expect(response).to redirect_to(new_team_team_founder_path(team))
 			end	
 		end
 

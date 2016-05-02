@@ -1,6 +1,7 @@
 class Team < ActiveRecord::Base
 
 #Associations
+	has_one :team_founder
 	has_many :users, dependent: :destroy
 	has_many :channels, dependent: :destroy
 

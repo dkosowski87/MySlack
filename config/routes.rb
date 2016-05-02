@@ -13,6 +13,7 @@ Rails.application.routes.draw do
         get 'unsubscribe'
       end
     end
+    resources :team_founders, only: [:new, :create, :edit, :update]
   end
 
   get 'msgs/:type/:id/:filter', to: 'msgs#index'

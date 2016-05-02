@@ -1,32 +1,32 @@
-class UsersController < ApplicationController
+class TeamFoundersController < ApplicationController
 	before_action :require_user, only: [:edit, :update]
-	before_action :find_team, only: [:edit, :update]
 	before_action :find_team_to_join, only: [:new, :create]
+	before_action :find_team, only: [:edit, :update]
 	before_action :set_back_link, only: [:new, :create]
 	before_action :set_back_user_panel_link, only: [:edit, :update]
 	
 	def new
-		@user = @team.users.new		
+		@team_founder = @team.build_team_founder	
 	end
 
 	def create
-		@user = @team.users.new(user_params)
-		if @user.save
-			session[:user_id] = @user.id
-			Notifier.welcome(@user).deliver_now
-			redirect_to "/msgs/channel/#{@user.team.channels.first.id}/all"
+		@team_founder = @team.build_team_founder(user_params)
+		if @team_founder.save
+			session[:user_id] = @team_founder.id
+			Notifier.welcome(@team_founder).deliver_now
+			redirect_to "/msgs/channel/#{@team_founder.team.channels.first.id}/all"
 		else
 			render 'new'
 		end
 	end
 
 	def edit
-		@user = current_user
+		@team_founder = current_user
 	end
 
 	def update
-		@user = current_user
-		if @user.update(user_params)
+		@team_founder = current_user
+		if @team_founder.update(user_params)
 			redirect_to "/msgs/channel/#{@team.channels.first.id}/all"
 	  else
 	  	flash.now[:alert] = "Could not change user information"
@@ -36,7 +36,7 @@ class UsersController < ApplicationController
 
 	private
 	def user_params
-		params.require(:user).permit(:name, :email, :password, :password_confirmation)
+		params.require(:team_founder).permit(:name, :email, :password, :password_confirmation)
 	end
 
 	def find_team_to_join

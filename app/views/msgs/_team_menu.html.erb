@@ -8,11 +8,19 @@
 	<%= recipient_groups(@user.team_members, @user) %>
 </ul>
 <div class="row settings-menu">
-	<div class="small-6 columns">
-		<%= link_to edit_team_user_path(@team, @user) do %>
-			<i class="fi-torso icon-large"></i>
-		<% end %>
-	</div>
+	<% if @user.is_a? TeamFounder %>
+		<div class="small-6 columns">
+			<%= link_to edit_team_team_founder_path(@team, @user) do %>
+				<i class="fi-torso icon-large"></i>
+			<% end %>
+		</div>
+	<% else %> 
+		<div class="small-6 columns">
+			<%= link_to edit_team_user_path(@team, @user) do %>
+				<i class="fi-torso icon-large"></i>
+			<% end %>
+		</div>
+	<% end %>
 	<div class="small-6 columns end">
 		<%= link_to team_channels_path(@team) do %>
 			<i class="fi-volume icon-large"></i>
