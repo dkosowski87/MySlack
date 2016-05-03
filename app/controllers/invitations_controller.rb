@@ -1,7 +1,7 @@
 class InvitationsController < ApplicationController
 	before_action :require_user
 	before_action :find_team_members
-	before_action :find_team
+	before_action :find_current_user_team
 	before_action :set_back_link
 
 	def new

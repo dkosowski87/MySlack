@@ -11,6 +11,7 @@ class SessionsController < ApplicationController
 				if params[:remember_me]
 					cookies.permanent.encrypted[:remember_me_token] = user.id
 				end
+				reset_session
 				session[:user_id] = user.id
 				redirect_to "/msgs/channel/#{user.team.channels.first.id}/all"
 			else
@@ -27,7 +28,6 @@ class SessionsController < ApplicationController
 	end
 
 	def destroy
-		session[:user_id] = nil
 		reset_session
 		cookies.delete(:remember_me_token)
 		redirect_to new_team_path

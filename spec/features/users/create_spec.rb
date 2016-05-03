@@ -5,8 +5,8 @@ RSpec.describe 'creating a user' do
 	let!(:team) { create(:team) }
 
 	def fill_in_and_submit(options={})
+		fill_in_create_team_form
 		attrs = attributes_for(:user).merge!(options)
-		visit "teams/#{team.id}/users/new"
 		fill_in 'Name', with: attrs[:name]
 		fill_in 'Email', with: attrs[:email]
 		fill_in 'Password', with: attrs[:password]

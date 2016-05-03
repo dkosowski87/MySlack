@@ -11,13 +11,12 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160502114657) do
+ActiveRecord::Schema.define(version: 20160503150914) do
 
   create_table "channels", force: :cascade do |t|
     t.string  "name",     limit: 255
     t.integer "team_id",  limit: 4
     t.integer "admin_id", limit: 4
-    t.string  "state",    limit: 255
   end
 
   add_index "channels", ["admin_id"], name: "index_channels_on_admin_id", using: :btree

@@ -61,6 +61,7 @@ RSpec.configure do |config|
   #including Factory Girl
   config.include FactoryGirl::Syntax::Methods
   config.include AuthenticationHelpers, :type => :feature
+  config.include TeamHelpers, :type => :feature
 end
 
 Shoulda::Matchers.configure do |config|

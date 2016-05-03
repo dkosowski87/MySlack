@@ -61,7 +61,7 @@ RSpec.describe TeamsController do
 		let!(:team) { create(:team) }
 
 		it 'finds the the team by id' do
-			expect(Team).to receive(:find).with(team.id.to_s)
+			expect(Team).to receive(:find_by).with(id: team.id.to_s)
 			post :join, {id: team.id}
 		end
 
@@ -71,7 +71,7 @@ RSpec.describe TeamsController do
 		end
 			
 		it 'authenticates the team by password' do
-			allow(Team).to receive(:find).with(team.id.to_s).and_return(team)
+			allow(Team).to receive(:find_by).with(id: team.id.to_s).and_return(team)
 			expect(team).to receive(:authenticate)
 			post :join, {id: team.id}
 		end

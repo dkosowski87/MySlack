@@ -1,5 +1,6 @@
 class TeamsController < ApplicationController
 	before_filter :require_user, only: [:destroy]
+	before_filter :find_team, only: [:join, :destroy]
 
 	def new
 		@team = Team.new		
@@ -15,8 +16,8 @@ class TeamsController < ApplicationController
 	end
 
 	def join
-		@team = Team.find(params[:id])
 		if @team && @team.authenticate(params[:password])
+			cookies.encrypted[:pass] = params[:password]
 			redirect_to new_team_user_path(@team)
 		else
 			flash[:alert] = "Sorry, incorrect password."
@@ -25,13 +26,12 @@ class TeamsController < ApplicationController
 	end
 
 	def destroy
-		@team = current_user.team
-		if @team.team_founder == current_user
+		if @team && @team.team_founder == current_user
 			@team.destroy
 			redirect_to new_team_path
 		else
-			flash[:alert] = "Could not delete team"
-			redirect_to "/msgs/channel/#{@team.channels.first.id}/all"
+			flash[:alert] = "Could not delete team."
+			redirect_to new_team_path
 		end
 	end
 
@@ -39,4 +39,9 @@ class TeamsController < ApplicationController
 	def team_params
 		params.require(:team).permit(:name, :password, :password_confirmation)
 	end
+	
+	def find_team
+		@team = Team.find_by(id: params[:id])
+	end
+
 end

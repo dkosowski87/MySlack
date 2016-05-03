@@ -7,18 +7,18 @@ Rails.application.routes.draw do
   	end
   	resources :users, only: [:new, :create, :edit, :update, :index] do
       member do
-        get 'deactivate'
-        get 'activate'
+        patch 'deactivate'
+        patch 'activate'
       end
     end
     resources :channels, only: [:new, :create, :index, :destroy] do
       member do
-        get 'join'
-        get 'reject'
-        get 'unsubscribe'
+        patch 'join'
+        patch 'reject'
+        delete 'unsubscribe'
       end
     end
-    resources :team_founders, only: [:new, :create, :edit, :update]
+    resource :team_founder, only: [:new, :create, :edit, :update]
   end
 
   get 'msgs/:type/:id/:filter', to: 'msgs#index'

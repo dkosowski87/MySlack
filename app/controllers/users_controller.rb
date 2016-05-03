@@ -1,7 +1,7 @@
 class UsersController < ApplicationController
 	before_action :require_user, only: [:edit, :update, :deactivate, :index]
-	before_action :find_team, only: [:edit, :update, :index, :deactivate]
-	before_action :find_team_to_join, only: [:new, :create, :activate]
+	before_action :find_team, only: [:new, :create, :index, :deactivate, :activate]
+	before_action :find_current_user_team, only: [:edit, :update ]
 	before_action :set_back_link, only: [:new, :create]
 	before_action :set_back_user_panel_link, only: [:edit, :update, :index]
 	
@@ -11,11 +11,17 @@ class UsersController < ApplicationController
 
 	def create
 		@user = @team.users.new(user_params)
-		if @user.save
-			session[:user_id] = @user.id
-			Notifier.welcome(@user).deliver_now
-			redirect_to "/msgs/channel/#{@user.team.channels.first.id}/all"
+		if @team && @team.authenticate(cookies.encrypted[:pass])
+			if @user.save
+				session[:user_id] = @user.id
+				Notifier.welcome(@user).deliver_now
+				cookies.delete(:pass)
+				redirect_to "/msgs/channel/#{@user.team.channels.first.id}/all"
+			else
+				render 'new'
+			end
 		else
+			flash.now[:alert] = 'You do not have access to this team.'
 			render 'new'
 		end
 	end
@@ -35,18 +41,22 @@ class UsersController < ApplicationController
 	end
 
 	def index 
-		@team_members = current_user.team_members
+		if @team && @team.team_founder == current_user
+			@team_members = current_user.team_members
+		else
+			render_file_not_found
+		end
 	end
 
 	def deactivate
 		@user = @team.users.find_by(id: params[:id])
-		if current_user == @user && @user && @user.deactivate!
+		if @user && @user == current_user && @user.deactivate!
 			session[:user_id] = nil
 			reset_session
 			cookies.delete(:remember_me_token)
 			flash[:alert] = 'Your account has been deactivated.'
 			redirect_to new_team_path
-		elsif current_user == @team.team_founder && @user && @user.deactivate!
+		elsif @user && @team.team_founder == current_user && @user.deactivate!
 			flash[:alert] = 'The account has been deactivated.'
 			redirect_to team_users_path(@team)
 		else
@@ -57,7 +67,7 @@ class UsersController < ApplicationController
 
 	def activate
 		@user = @team.users.find_by(id: params[:id])
-		if current_user == @team.team_founder && @user && @user.activate!
+		if @user && @team.team_founder == current_user && @user.activate!
 			Notifier.send_activate_response(@user).deliver_now
 			flash[:alert] = 'The account has been activated.'
 			redirect_to team_users_path(@team)
@@ -72,7 +82,7 @@ class UsersController < ApplicationController
 		params.require(:user).permit(:name, :email, :password, :password_confirmation)
 	end
 
-	def find_team_to_join
+	def find_team
 		@team = Team.find_by(id: params[:team_id])
 	end
 

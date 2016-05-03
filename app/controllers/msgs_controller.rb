@@ -1,7 +1,7 @@
 class MsgsController < ApplicationController
 	before_action :require_user
 	before_action :find_user
-	before_action :find_team
+	before_action :find_current_user_team
 	before_action :provide_message_template, only: [:index]
 
 	def index

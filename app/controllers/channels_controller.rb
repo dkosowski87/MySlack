@@ -1,10 +1,12 @@
 class ChannelsController < ApplicationController
 	before_action :require_user
-	before_action :find_team
+	before_action :find_current_user_team
+	before_action :find_user_channel, only: [:join, :reject, :unsubscribe]
+	before_action :check_invitation_info, only: [:join, :reject]
 	before_action :set_back_link
 	
 	def new
-		@channel = Channel.new
+		@channel = current_user.adm_channels.new
 	end
 
 	def create
@@ -18,27 +20,23 @@ class ChannelsController < ApplicationController
 	end
 
 	def join
-		check_invitation
-		if @channel && @invitation
+		if @channel && check_invitation_info
 			@channel.users << current_user
 			@invitation.accept!
 			redirect_to "/msgs/channel/#{@channel.id}/all"
 		else
-			render 'new'
-			@channel = Channel.new
-			flash.now[:alert] = 'There is a problem with your invitation'
+			flash[:alert] = 'There is a problem with your invitation'
+			redirect_to team_channels_path(@team)
 		end
 	end
 
 	def reject
-		check_invitation
-		if @channel && @invitation
+		if @channel && check_invitation_info
 			@invitation.reject!
 			redirect_to "/msgs/channel/#{@team.channels.first.id}/all"
 		else
-			render 'new'
-			@channel = Channel.new
-			flash.now[:alert] = 'There is a problem with your invitation'
+			flash[:alert] = 'There is a problem with your invitation'
+			redirect_to team_channels_path(@team)
 		end
 	end
 
@@ -48,8 +46,7 @@ class ChannelsController < ApplicationController
 	end
 
 	def unsubscribe
-		@channel = current_user.channels.find_by(id: params[:id])
-		if @channel.users.delete(current_user)
+		if @channel && @channel.users.delete(current_user)
 			redirect_to "/msgs/channel/#{@team.channels.first.id}/all"
 		else
 			flash[:alert] = "You did not unsubscribe from the channel"
@@ -59,7 +56,7 @@ class ChannelsController < ApplicationController
 
 	def destroy
 		@channel = current_user.adm_channels.find_by(id: params[:id])
-		if @channel.destroy
+		if @channel && @channel.destroy
 			redirect_to "/msgs/channel/#{@team.channels.first.id}/all"
 		else
 			flash[:alert] = "The channel could not be deleted."
@@ -76,8 +73,12 @@ class ChannelsController < ApplicationController
 		go_back_link("/msgs/channel/#{@team.channels.first.id}/all")
 	end
 
-	def check_invitation
+	def find_user_channel
 		@channel = current_user.team.channels.find_by(id: params[:id])
-		@invitation = current_user.received_invitations.where(sender: @channel.admin, state: 'pending').with_text("##{@channel.id}").last
 	end
+
+	def check_invitation_info
+		@invitation = current_user.check_invitation(@channel)
+	end
+
 end

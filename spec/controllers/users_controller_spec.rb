@@ -47,6 +47,11 @@ RSpec.describe UsersController do
 		end
 
 		context 'with valid params' do
+
+			before(:each) do
+				allow(Team).to receive(:find_by).and_return(team)
+				allow(team).to receive(:authenticate).and_return(team)
+			end
  
 			it 'creates a user' do
 				post :create, valid_params

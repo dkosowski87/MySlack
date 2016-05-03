@@ -7,11 +7,11 @@
 	<li>
 	<p><%= member.name %>
 	<% if member.state == 'active' %>
-		<%= link_to deactivate_team_user_path(@team, member) do %>
+		<%= link_to deactivate_team_user_path(@team, member), method: :patch do %>
 			<span>Deactivate</span></p>
 		<% end %>
 	<% else %>
-		<%= link_to activate_team_user_path(@team, member) do %>
+		<%= link_to activate_team_user_path(@team, member), method: :patch do %>
 			<span>Activate</span></p>
 		<% end %>
 	<% end %>

@@ -22,7 +22,7 @@
 		<li>
 		<p><%= channel.name %>
 			<% unless @adm_channels.include?(channel) || channel.name == 'General' %>
-				<%= link_to unsubscribe_team_channel_path(@team, channel) do %>
+				<%= link_to unsubscribe_team_channel_path(@team, channel), method: :delete do %>
 					<span>Unsubscribe</span></p>
 				<% end %>
 			<% end %>

@@ -5,6 +5,6 @@
 	<%= f.submit 'Update' %>
 <% end %>
 
-<%= link_to deactivate_team_user_path(@team, @user) do %>
+<%= link_to deactivate_team_user_path(@team, @user), method: :patch do %>
 	<p class="text-center">I would like to deactivate my account.</p>
 <% end %>

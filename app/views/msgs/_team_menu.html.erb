@@ -10,7 +10,7 @@
 <div class="row settings-menu">
 	<% if @user.is_a? TeamFounder %>
 		<div class="small-4 columns">
-			<%= link_to edit_team_team_founder_path(@team, @user) do %>
+			<%= link_to edit_team_team_founder_path(@team) do %>
 				<i class="fi-torso icon-large"></i>
 			<% end %>
 		</div>

@@ -1,11 +1,12 @@
 class Msg < ActiveRecord::Base
+
 #Associations	
 	belongs_to :sender, class_name: "User", foreign_key: "sender_id"
 	belongs_to :recipient, polymorphic: true
 
 #Validations
 	validates :sender_id, presence: true
-	validates :recipient_id, presence: {message: "Please enter the recipient of the messages."}
+	validates :recipient_id, presence: {message: "Please enter the recipient of the message."}
 	validates :recipient_type, presence: {message: "Please enter the type of recipient."}
 	validates :content, presence: {message: "You are trying to send a message without any content."},
 											length: {maximum: 2000, message: "Your message is too long."}

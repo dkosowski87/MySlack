@@ -1,6 +1,5 @@
 class User < ActiveRecord::Base
-	has_secure_password
-
+	
 #Associations
 	belongs_to :team, counter_cache: :number_of_members
 
@@ -14,6 +13,7 @@ class User < ActiveRecord::Base
 	has_many :received_invitations, class_name: "Invitation", as: :recipient
 	
 #Validations
+	has_secure_password
 	validates :name, presence: {message: "Please state your name."},
 									 format: {with: /\A[A-Z][a-z]+\z/, message: "Your name should start with an uppercase letter.", if: "name.present?"}
 	validates :team_id, presence: true
@@ -24,7 +24,6 @@ class User < ActiveRecord::Base
 	after_create :send_welcome_msg, :join_general_channel
 
 	private
-
 	def send_welcome_msg
 		team_members.find_each do |team_member|
 			welcome_msg = sent_msgs.new( content: "Hi, my name is #{name} and I just joined your team. Go #{team.name}!", 
@@ -39,14 +38,12 @@ class User < ActiveRecord::Base
 	end
 
 #Query Scope
-	
 	public
 	def team_members
 		team.users.where("id != ?", self.id)
 	end
 
 #State
-
 	state_machine :state, :initial => :active do
 		event :deactivate! do
 			transition :active => :deactivated
@@ -57,9 +54,12 @@ class User < ActiveRecord::Base
 	end
 
 #Other instance methods
-
 	def generate_password_reset_token!
 		update_attribute(:password_reset_token, SecureRandom.urlsafe_base64(48))
+	end
+
+	def check_invitation(channel)
+		received_invitations.where(sender: channel.admin, state: 'pending').with_text("##{channel.id}").last
 	end
 
 end

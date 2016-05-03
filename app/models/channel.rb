@@ -1,4 +1,5 @@
 class Channel < ActiveRecord::Base
+
 #Associations
 	belongs_to :team
 
@@ -17,7 +18,6 @@ class Channel < ActiveRecord::Base
 	before_destroy :send_channel_closing_msg
 
 	private
-
 	def join_admin_as_user
 		users << admin if admin.present?
 	end

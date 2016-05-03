@@ -1,6 +1,6 @@
 <%= title("Edit your account") %>
 
-<%= standard_form [@team, @team_founder] do |f| %>
+<%= standard_form [@team, @team_founder], url: team_team_founder_path do |f| %>
 	<%= render partial: 'users/form', locals: {f: f} %>
 	<%= f.submit 'Update' %>
 <% end %>

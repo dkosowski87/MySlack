@@ -19,9 +19,7 @@ class PasswordResetController < ApplicationController
 	end
 
 	def edit
-		if @user = User.find_by(password_reset_token: params[:password_reset_token])
-			@team = @user.team
-		else
+		unless @user = User.find_by(password_reset_token: params[:password_reset_token])
 	    render file: 'public/404.html', status: :not_found
 	  end
 	end
@@ -30,6 +28,7 @@ class PasswordResetController < ApplicationController
 		@user = User.find_by(password_reset_token: params[:password_reset_token])
 		if @user && @user.update(user_params)
 			@user.update_attribute(:password_reset_token, nil)
+			reset_session
 			session[:user_id] = @user.id
 			redirect_to "/msgs/channel/#{@user.team.channels.first.id}/all"
 	  else

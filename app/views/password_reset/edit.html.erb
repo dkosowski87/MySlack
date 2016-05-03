@@ -1,6 +1,6 @@
 <%= title("Edit your account") %>
 
-<%= standard_form @user, url: update_password_reset_path(@user.password_reset_token) do |f| %>
+<%= standard_form @user, as: :user, url: update_password_reset_path(@user.password_reset_token) do |f| %>
 	<%= render partial: 'users/form', locals: {f: f} %>
 	<%= f.submit 'Update' %>
 <% end %>
