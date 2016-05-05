@@ -9,23 +9,23 @@
 						<span class="delete-message-button">&#10006;</span>
 					<% end %>
 					<% if msg.state == 'pending' %>
-						<%= msg.created_at.to_formatted_s(:short) %>| <strong>You have sent an invitation to <%= msg.recipient.name %>.</strong>
+						<%= msg.send_time %>| <strong>You have sent an invitation to <%= msg.recipient.name %>.</strong>
 					<% elsif msg.state == 'accepted' %>
-						<%= msg.created_at.to_formatted_s(:short) %>| <strong><%= msg.recipient.name %> accepted your invitation.</strong>
+						<%= msg.send_time %>| <strong><%= msg.recipient.name %> accepted your invitation.</strong>
 					<% else %>
-						<%= msg.created_at.to_formatted_s(:short) %>| <strong><%= msg.recipient.name %> rejected your invitation.</strong>
+						<%= msg.send_time %>| <strong><%= msg.recipient.name %> rejected your invitation.</strong>
 					<% end %>
 				<% else %>
 					<% if msg.state == 'pending' %>
-					<p><%=msg.created_at.to_formatted_s(:short)%> |<strong> Invitation from <%=msg.sender.name%>:</strong></p>
+					<p><%=msg.send_time%> |<strong> Invitation from <%=msg.sender.name%>:</strong></p>
 						<p><em><%= invitation_content(msg) %></em></p>
 						<%= join_channel_link(msg) %>
 					<% elsif msg.state == 'accepted' %>
-						<p><%=msg.created_at.to_formatted_s(:short)%> |<strong> Invitation from <%=msg.sender.name%>:</strong></p>
+						<p><%=msg.send_time%> |<strong> Invitation from <%=msg.sender.name%>:</strong></p>
 						<p><em><%= invitation_content(msg) %></em></p>
 						You have accepted the invitation.
 					<% else %>
-						<p><%=msg.created_at.to_formatted_s(:short)%> |<strong> Invitation from <%=msg.sender.name%>:</strong></p>
+						<p><%=msg.send_time%> |<strong> Invitation from <%=msg.sender.name%>:</strong></p>
 						<p><em><%= invitation_content(msg) %></em></p>
 						You have rejected the invitation.
 					<% end %>
@@ -38,7 +38,7 @@
 						<span class="delete-message-button">&#10006;</span>
 					<% end %>
 				<% end %>
-				<%= msg.created_at.to_formatted_s(:short) %>| <strong><%=msg.sender.name%>:</strong> 
+				<%= msg.send_time %>| <strong><%=msg.sender.name%>:</strong> 
 				<%= msg.content %>
 				</div>
 			<% end %>

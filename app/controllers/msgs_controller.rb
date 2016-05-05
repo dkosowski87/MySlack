@@ -27,21 +27,27 @@ class MsgsController < ApplicationController
 
 	def create
 		@msg = current_user.sent_msgs.new(msg_params)
-		if @msg.save
-		 	redirect_to "/msgs/#{params[:msg][:recipient_type].downcase}/#{params[:msg][:recipient_id]}/all" 
-		else
-			flash[:alert] = "The message was not sent"
-			redirect_to "/msgs/channel/#{current_user.team.channels.first.id}/all"
+		respond_to do |format|
+			if @msg.save
+				if request.xhr?
+					format.json { render json: @msg }
+				else
+					format.html { redirect_to "/msgs/#{params[:msg][:recipient_type].downcase}/#{params[:msg][:recipient_id]}/all" }
+				end
+			else
+				flash[:alert] = "The message was not sent"
+				format.html { redirect_to "/msgs/channel/#{current_user.team.channels.first.id}/all" }
+			end
 		end
 	end
 
 	def destroy
 		@msg = current_user.sent_msgs.find_by(id: params[:id])
 		if @msg.destroy
-			redirect_to "/msgs/channel/#{current_user.team.channels.first.id}/all"
+			redirect_to "/msgs/#{@msg.recipient_type.to_s.downcase}/#{@msg.recipient_id}/all"
 		else
 			flash[:alert] = "The message was not destroyed"
-			redirect_to "/msgs/channel/#{current_user.team.channels.first.id}/all"	
+			redirect_to "/msgs/#{@msg.recipient_type.to_s.downcase}/#{@msg.recipient_id}/all"	
 		end
 	end
 

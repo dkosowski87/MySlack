@@ -49,5 +49,18 @@ class Msg < ActiveRecord::Base
 			Date.strptime(month, "%m").prev_year.all_month
 		end
 	end
-		
+
+#Public methods & Overrides
+	public
+	def send_time
+		created_at.to_formatted_s(:short)
+	end
+
+	def as_json(options={})
+		options[:only] = [:id, :content]
+		options[:methods] = :send_time
+		options[:include] = { sender: { only: :name } }
+		super(options)
+	end
+
 end

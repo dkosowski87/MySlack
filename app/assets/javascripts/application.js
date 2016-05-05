@@ -17,3 +17,9 @@
 //= require_tree .
 
 $(function(){ $(document).foundation(); });
+
+// Functionalities to be added:
+// Sending messages
+// Pulling msgs from server
+// Automatic msgs pulling
+// Searching through messages
