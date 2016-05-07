@@ -8,31 +8,57 @@ $(document).ready( function() {
 						+ "| <strong>"
 						+ response.sender.name
 						+ ":</strong> "
-						+ response.content + 
-						"</div>";
+						+ "<span class='message-text'>" + response.content + "</span>"
+						+ "</div>";
 		return html	
 	}
 
-	$('#new_msg').on("ajax:success", function(event, response) {
-		var msg = parseMsg(response)
-		$('.message-content').append(msg);
-		$('.message:last-child').hide().slideDown(200);
-		$('#new_msg input[type="text"]').val("");
-		$("body").animate({ scrollTop: $('body').height() }, 800);
-	});
+	function scrollView() {
+		document.body.scrollTop = $('body').height();
+	}
 
+	scrollView();
+	
 	$('[href]').on("ajax:success", function(event, response) {
 		var msgs = "";
 		for (var i = 0; i < response.length; i += 1 ) {
 			msgs += parseMsg(response[i]);
 		}
+		$('.top-menu').hide()
 		$('.message-content').html(msgs).hide().fadeIn();
+		scrollView();
+		setTimeout(function () { $('.top-menu').fadeIn() }, 200);
 		window.history.replaceState("", "", $(this).attr("href"));
+		$('#search-form').attr("action", $(this).attr("href"));
 	});
 
+	$('#new_msg').on("ajax:success", function(event, response) {
+		var msg = parseMsg(response);
+		$('.message-content').append(msg);
+		$('.message:last-child').hide().slideDown(200);
+		$('#new_msg input[type="text"]').val("");
+		$('body').animate({ scrollTop: $('body').height() }, 800);
+	});
 
-// Automatic msgs pulling
-// Searching through messages
+	$('#search-form').on("ajax:success", function(event, response) {
+		var msgs = "";
+		for (var i = 0; i < response.length; i += 1 ) {
+			msgs += parseMsg(response[i]);
+		}
+		$('.message-content').html(msgs).hide().fadeIn();
+		var searchedText = $('#search-form input[type="text"]').val();
+		$('.message-text').each( function () {
+			var messageText = $(this).html()
+			var matchPhrase = new RegExp(searchedText, "gi")
+			var matchedText = messageText.match(matchPhrase)[0]
+			var foundText = messageText.replace(matchPhrase , "<span class='searched-text'>" + matchedText + "</span>");
+			$(this).html(foundText);
+		});
+		scrollView();
+		setTimeout(function () { $('.top-menu').fadeIn() }, 250);
+	});
+
+// Automatic msgs pulling (showing active channels and users)
 
 });
  
