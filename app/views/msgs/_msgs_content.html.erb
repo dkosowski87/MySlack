@@ -1,0 +1,46 @@
+<% unless @msgs.nil? %>
+<div class="no-bullet message-content">
+	<% @msgs.each do |msg| %>
+		<% if msg.is_a? Invitation %>
+			<div class="message">
+			<% if msg.sender == @user %>
+				<%= link_to "/msgs/#{msg.id}", method: :delete do %>
+					<span class="delete-message-button">&#10006;</span>
+				<% end %>
+				<% if msg.state == 'pending' %>
+					<%= msg.send_time %>| <strong>You have sent an invitation to <%= msg.recipient.name %>.</strong>
+				<% elsif msg.state == 'accepted' %>
+					<%= msg.send_time %>| <strong><%= msg.recipient.name %> accepted your invitation.</strong>
+				<% else %>
+					<%= msg.send_time %>| <strong><%= msg.recipient.name %> rejected your invitation.</strong>
+				<% end %>
+			<% else %>
+				<% if msg.state == 'pending' %>
+				<p><%=msg.send_time%> |<strong> Invitation from <%=msg.sender.name%>:</strong></p>
+					<p><em><%= invitation_content(msg) %></em></p>
+					<%= join_channel_link(msg) %>
+				<% elsif msg.state == 'accepted' %>
+					<p><%=msg.send_time%> |<strong> Invitation from <%=msg.sender.name%>:</strong></p>
+					<p><em><%= invitation_content(msg) %></em></p>
+					You have accepted the invitation.
+				<% else %>
+					<p><%=msg.send_time%> |<strong> Invitation from <%=msg.sender.name%>:</strong></p>
+					<p><em><%= invitation_content(msg) %></em></p>
+					You have rejected the invitation.
+				<% end %>
+			<% end %>	
+			</div>
+		<% else %>
+			<div class="message">
+			<% if msg.sender == @user %>
+				<%= link_to "/msgs/#{msg.id}", method: :delete do %>
+					<span class="delete-message-button">&#10006;</span>
+				<% end %>
+			<% end %>
+			<%= msg.send_time %>| <strong><%=msg.sender.name%>:</strong> 
+			<span class="message-text"><%= msg.content %></span>
+			</div>
+		<% end %>
+	<% end %>
+</div>
+<% end %>

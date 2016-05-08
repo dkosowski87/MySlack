@@ -20,32 +20,20 @@ $(document).ready( function() {
 	scrollView();
 	
 	$('[href]').on("ajax:success", function(event, response) {
-		var msgs = "";
-		for (var i = 0; i < response.length; i += 1 ) {
-			msgs += parseMsg(response[i]);
-		}
 		$('.top-menu').hide()
-		$('.message-content').html(msgs).hide().fadeIn();
+		$('.message-container').html(response).hide().fadeIn();
 		scrollView();
 		setTimeout(function () { $('.top-menu').fadeIn() }, 200);
 		window.history.replaceState("", "", $(this).attr("href"));
 		$('#search-form').attr("action", $(this).attr("href"));
+		hrefArray = window.location.pathname.split('/');
+		console.log(hrefArray);
+		$('#msg_recipient_type').val(hrefArray[2].charAt(0).toUpperCase() + hrefArray[2].slice(1));
+		$('#msg_recipient_id').val(hrefArray[3]);
 	});
 
-	$('#new_msg').on("ajax:success", function(event, response) {
-		var msg = parseMsg(response);
-		$('.message-content').append(msg);
-		$('.message:last-child').hide().slideDown(200);
-		$('#new_msg input[type="text"]').val("");
-		$('body').animate({ scrollTop: $('body').height() }, 800);
-	});
-
-	$('#search-form').on("ajax:success", function(event, response) {
-		var msgs = "";
-		for (var i = 0; i < response.length; i += 1 ) {
-			msgs += parseMsg(response[i]);
-		}
-		$('.message-content').html(msgs).hide().fadeIn();
+	$('#search-form').on("ajax:success", function(even, response) {
+		$('.message-container').html(response).hide().fadeIn();
 		var searchedText = $('#search-form input[type="text"]').val();
 		$('.message-text').each( function () {
 			var messageText = $(this).html()
@@ -56,6 +44,14 @@ $(document).ready( function() {
 		});
 		scrollView();
 		setTimeout(function () { $('.top-menu').fadeIn() }, 250);
+	});
+
+	$('#new_msg').on("ajax:success", function(event, response) {
+		var msg = parseMsg(response);
+		$('.message-content').append(msg);
+		$('.message:last-child').hide().slideDown(200);
+		$('#new_msg input[type="text"]').val("");
+		$('body').animate({ scrollTop: $('body').height() }, 800);
 	});
 
 // Automatic msgs pulling (showing active channels and users)
