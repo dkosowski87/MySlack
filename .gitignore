@@ -12,3 +12,5 @@
 !/log/.keep
 /tmp
 /spec/features/features.txt
+
+/config/application.yml
