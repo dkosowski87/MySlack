@@ -12,3 +12,6 @@
 !/log/.keep
 /tmp
 /spec/features/features.txt
+
+# Ignore application configuration
+/config/application.yml

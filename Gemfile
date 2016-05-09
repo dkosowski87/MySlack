@@ -13,6 +13,7 @@ gem 'state_machines', '~> 0.4.0'
 gem 'state_machines-activerecord', '~> 0.3.0'
 gem 'foundation-rails', '~> 6.2', '>= 6.2.0.1'
 gem 'foundation-icons-sass-rails', '~> 3.0'
+gem 'figaro', '~> 1.1', '>= 1.1.1'
 
 gem 'sdoc', '~> 0.4.0', group: :doc
 
