@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 
 gem 'rails', '4.2.0'
-gem 'mysql2', '~> 0.3.18'
+
 gem 'sass-rails', '~> 5.0'
 gem 'uglifier', '>= 1.3.0'
 gem 'coffee-rails', '~> 4.1.0'
@@ -23,6 +23,7 @@ group :development, :test do
   gem 'byebug'
   gem 'spring'
   gem 'factory_girl_rails', '~> 4.7'
+  gem 'mysql2', '~> 0.3.18'
 #commented out this gem because of info from running 'rake test', apparently this gem should be in the development enivronment
 # Access an IRB console on exception pages or by using <%= console %> in views
 # gem 'web-console', '~> 2.0' 
@@ -32,6 +33,10 @@ group :test do
 	gem 'capybara', '~> 2.7'
 	gem 'shoulda-matchers', '~> 3.1', '>= 3.1.1'
 	gem 'capybara-email', '~> 2.5'	
+end
+
+group :production do
+	gem 'pg', '~> 0.18.4'
 end
 
 
