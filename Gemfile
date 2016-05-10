@@ -5,7 +5,7 @@ gem 'mysql2', '~> 0.3.18'
 gem 'sass-rails', '~> 5.0'
 gem 'uglifier', '>= 1.3.0'
 gem 'coffee-rails', '~> 4.1.0'
-gem 'bcrypt-ruby', '~> 3.1', '>= 3.1.5'
+gem 'bcrypt', '~> 3.1', '>= 3.1.11'
 gem 'jquery-rails'
 gem 'turbolinks'
 gem 'jbuilder', '~> 2.0'
@@ -13,6 +13,7 @@ gem 'state_machines', '~> 0.4.0'
 gem 'state_machines-activerecord', '~> 0.3.0'
 gem 'foundation-rails', '~> 6.2', '>= 6.2.0.1'
 gem 'foundation-icons-sass-rails', '~> 3.0'
+gem 'figaro', '~> 1.1', '>= 1.1.1'
 
 gem 'sdoc', '~> 0.4.0', group: :doc
 
