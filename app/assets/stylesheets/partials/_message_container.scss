@@ -19,6 +19,11 @@
 			.delete-message-button {
 				display: none;
 			}
+			.searched-text {
+				font-size: 1.3em;
+				font-weight: bold;
+				color: $alert-color;
+			}
 			&:hover {
 				background: lighten($light-gray, 8%);
 				.delete-message-button {

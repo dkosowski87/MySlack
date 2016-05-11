@@ -1,5 +1,5 @@
 <div class="message-console">
-<%= form_for @msg do |f| %>
+<%= form_for @msg, remote: true do |f| %>
 <div class="input-group">
 	<%= f.text_field :content, class: "input-group-field" %>
 	<%= f.hidden_field :recipient_type, value: (recipient.class.to_s == 'Channel' ? 'Channel' : 'User') %>

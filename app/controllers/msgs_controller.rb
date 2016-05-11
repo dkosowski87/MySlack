@@ -5,43 +5,42 @@ class MsgsController < ApplicationController
 	before_action :provide_message_template, only: [:index]
 
 	def index
-		case params[:type]
-		when 'channel'
-			if find_channel
-				msgs_in_channel = Msg.in_channels(@channel)
-				@msgs = filter_messages(msgs_in_channel, params[:q], params[:filter], params[:date]).order(:created_at)
-				render layout: 'msgs_panel'
-			else
-				render file: 'public/404', status: :not_found
-			end
-		when 'user'
-			if find_team_member
-				msgs_between_team_members = Msg.between_team_members(current_user, @team_member)
-				@msgs = filter_messages(msgs_between_team_members, params[:q], params[:filter], params[:date]).order(:created_at)
-				render layout: 'msgs_panel'
-			else
-				render file: 'public/404', status: :not_found
-			end
-		end 		
+		if params[:type] == 'channel'&& find_channel
+			msgs_in_channel = Msg.in_channels(@channel)
+			@msgs = find_messages(msgs_in_channel)
+			respond_to_index_request
+		elsif params[:type] == 'user' && find_team_member
+			msgs_between_team_members = Msg.between_team_members(current_user, @team_member)
+			@msgs = find_messages(msgs_between_team_members)
+			respond_to_index_request
+		else
+			render file: 'public/404', status: :not_found
+		end
 	end
 
 	def create
 		@msg = current_user.sent_msgs.new(msg_params)
-		if @msg.save
-		 	redirect_to "/msgs/#{params[:msg][:recipient_type].downcase}/#{params[:msg][:recipient_id]}/all" 
-		else
-			flash[:alert] = "The message was not sent"
-			redirect_to "/msgs/channel/#{current_user.team.channels.first.id}/all"
+		respond_to do |format|
+			if @msg.save
+				if request.xhr?
+					format.json { render json: @msg }
+				else
+					format.html { redirect_to "/msgs/#{params[:msg][:recipient_type].downcase}/#{params[:msg][:recipient_id]}/all" }
+				end
+			else
+				flash[:alert] = "The message was not sent"
+				format.html { redirect_to "/msgs/channel/#{current_user.team.channels.first.id}/all" }
+			end
 		end
 	end
 
 	def destroy
 		@msg = current_user.sent_msgs.find_by(id: params[:id])
 		if @msg.destroy
-			redirect_to "/msgs/channel/#{current_user.team.channels.first.id}/all"
+			redirect_to "/msgs/#{@msg.recipient_type.to_s.downcase}/#{@msg.recipient_id}/all"
 		else
 			flash[:alert] = "The message was not destroyed"
-			redirect_to "/msgs/channel/#{current_user.team.channels.first.id}/all"	
+			redirect_to "/msgs/#{@msg.recipient_type.to_s.downcase}/#{@msg.recipient_id}/all"	
 		end
 	end
 
@@ -87,4 +86,19 @@ class MsgsController < ApplicationController
 		end
 	end
 
+	def find_messages(msgs)
+		filter_messages(msgs, params[:q], params[:filter], params[:date]).order(:created_at)
+	end
+
+	def respond_to_index_request
+		respond_to do |format|
+			if request.xhr?
+				format.html { render partial: 'msgs_content' }
+				format.json { render json: @msgs }
+			else
+				format.html { render layout: 'msgs_panel' }
+			end
+		end
+	end
+	
 end

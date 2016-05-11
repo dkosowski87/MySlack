@@ -25,7 +25,7 @@ module MsgsHelper
 			query_string = {date: date.month}.to_query
 			months_tag += capture do
 				content_tag :li do
-					link_to "#{date.strftime('%B')}", "during_month?#{query_string}"
+					link_to "#{date.strftime('%B')}", "during_month?#{query_string}", remote: true
 				end 
 			end
 			date = date.next_month
@@ -40,7 +40,7 @@ module MsgsHelper
 			query_string = {date: year}.to_query
 			years_tag += capture do
 				content_tag :li do
-					link_to "#{year}", "during_year?#{query_string}"
+					link_to "#{year}", "during_year?#{query_string}", remote: true
 				end 
 			end
 			year -= 1
