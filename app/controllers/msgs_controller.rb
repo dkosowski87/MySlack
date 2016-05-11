@@ -91,10 +91,13 @@ class MsgsController < ApplicationController
 	end
 
 	def respond_to_index_request
-		if request.xhr?
-			render partial: 'msgs_content'
-		else
-			render layout: 'msgs_panel'
+		respond_to do |format|
+			if request.xhr?
+				format.html { render partial: 'msgs_content' }
+				format.json { render json: @msgs }
+			else
+				format.html { render layout: 'msgs_panel' }
+			end
 		end
 	end
 	

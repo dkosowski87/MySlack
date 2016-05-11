@@ -1,5 +1,32 @@
 $(document).ready( function() {
 
+	var receivedMessages;
+	var intervalId;
+	
+	function countMessages() {
+		receivedMessages = $('.message').length;
+	}
+
+	function checkNewMessages() {
+		clearInterval(intervalId);
+		intervalId = setInterval(getMessages, 5000);
+	}
+
+	function getMessages() {
+		$.ajax({
+			url: window.location.pathname,
+			method: 'GET',
+			dataType: 'json',
+			success: function(response) {
+				while ( response.length > receivedMessages ) {
+					appendMessageContent(response.pop());
+					$('.message:last-child').hide().slideDown(200);
+				}
+				countMessages();
+			}
+		});
+	}
+
 	function createMsgTemplate(message) {
 		var html = "<div class='message'>" 
 						+ "<a rel='no-follow' data-method='delete' href='/msgs/" + message.id + "'>"
@@ -13,14 +40,11 @@ $(document).ready( function() {
 		return html	
 	}
 
-	$('#new_msg').on("ajax:success", function(event, response) {
+	function appendMessageContent(response) {
 		var msgTemplate = createMsgTemplate(response);
 		$('.message-content').append(msgTemplate);
 		$('.message:last-child .message-text').text(response.content);
-		$('.message:last-child').hide().slideDown(200);
-		$('#new_msg input[type="text"]').val("");
-		$('body').animate({ scrollTop: $('body').height() }, 800);
-	});
+	}
 
 	function scrollView() {
 		$('.top-menu').hide();
@@ -39,7 +63,15 @@ $(document).ready( function() {
 			element.children().first().addClass('active-link');
 		}	
 	}
-	
+
+	$('#new_msg').on("ajax:success", function(event, response) {
+		appendMessageContent(response);
+		$('.message:last-child').hide().slideDown(200);
+		$('#new_msg input[type="text"]').val("");
+		$('body').animate({ scrollTop: $('body').height() }, 800);
+		countMessages();
+	});
+
 	$('[href]').on("ajax:success", function(event, response) {
 		var newPath = $(this).attr("href");
 		window.history.replaceState("", "", newPath);
@@ -53,9 +85,13 @@ $(document).ready( function() {
 
 		$('.message-container').html(response);
 		scrollView();
+		countMessages();
+		checkNewMessages();
 	});
 
 	$('#search-form').on("ajax:success", function(event, response) {
+		clearInterval(intervalId);
+
 		var searchedText = $('#search-form input[type="text"]').val();
 
 		$('.message-container').html(response)
@@ -73,7 +109,7 @@ $(document).ready( function() {
 	$('.channel').first().addClass('active-link');
 	$('#refresh-link').hide();
 	scrollView();
-
+	countMessages();
+	checkNewMessages();
 
 });
- 
